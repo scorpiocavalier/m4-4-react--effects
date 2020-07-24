@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
+import Item from './Item'
 
 import cookieSrc from "../cookie.svg"
 
@@ -11,21 +12,17 @@ const items = [
 ]
 
 export default () => {
-  // TODO: Replace this with React state!
-  const numCookies = 100
-  const purchasedItems = {
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
-  }
+  const [numCookies, setNumCookies] = useState(100)
+  const [purchasedItems, setPurchasedItems] = useState({
+    cursor: 0, grandma: 0, farm: 0,
+  })
 
   return (
     <Wrapper>
       <GameArea>
         <Indicator>
           <Total>{numCookies} cookies</Total>
-          {/* TODO: Calcuate the cookies per second and show it here: */}
-          <strong>0</strong> cookies per second
+          <strong>{}</strong> cookies per second
         </Indicator>
         <Button>
           <Cookie src={cookieSrc} />
@@ -34,7 +31,14 @@ export default () => {
 
       <ItemArea>
         <SectionTitle>Items:</SectionTitle>
-        {/* TODO: Add <Item> instances here, 1 for each item type. */}
+        { items.map(item => {
+          return <Item
+            key={item.id}
+            item={item}
+            purchasedItems={purchasedItems}
+            handleClick={() => console.log('handleClick')}
+          />
+        })}
       </ItemArea>
       <HomeLink to="/">Return home</HomeLink>
     </Wrapper>

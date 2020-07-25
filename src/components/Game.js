@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import Item from './Item'
@@ -13,6 +13,11 @@ const items = [
 
 export default () => {
   const [numCookies, setNumCookies] = useState(100)
+
+  useEffect(() => {
+    document.title = `${numCookies} cookies - Cookie Clicker`
+  }, [numCookies])
+
   const [purchasedItems, setPurchasedItems] = useState({
     cursor: 0, grandma: 0, farm: 0,
   })

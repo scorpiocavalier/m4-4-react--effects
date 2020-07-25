@@ -1,5 +1,19 @@
-import React from 'react';
+import React from 'react'
 import styled from 'styled-components'
+
+export default ({ item: { id, name, cost, value }, purchasedItems, handleClick }) => {
+  const numOwned = Object.entries(purchasedItems).find(([ itemName ]) => itemName === id)[1]
+
+  return <ButtonWrapper onClick={handleClick}>
+    <ItemWrapper>
+      <Name>{name}</Name>
+      <Specs>Cost: {cost} cookie(s). Produces {value} cookies/second.</Specs>
+    </ItemWrapper>
+    <CounterWrapper>
+      <Counter>{numOwned}</Counter>
+    </CounterWrapper>
+  </ButtonWrapper>
+}
 
 const ButtonWrapper = styled.button`
   display: flex;
@@ -37,19 +51,3 @@ const Specs = styled.div`
 const Counter = styled.div`
   font-size: 30px;
 `
-
-export default ({ item: { id, name, cost, value }, purchasedItems, handleClick }) => {
-  const numOwned = Object.entries(purchasedItems).find(([ itemName ]) => itemName === id)[1]
-
-  return (
-    <ButtonWrapper>
-      <ItemWrapper>
-        <Name>{name}</Name>
-        <Specs>Cost: {cost} cookie(s). Produces {value} cookies/second.</Specs>
-      </ItemWrapper>
-      <CounterWrapper>
-        <Counter>{numOwned}</Counter>
-      </CounterWrapper>
-    </ButtonWrapper>
-  )
-}

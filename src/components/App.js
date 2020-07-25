@@ -6,17 +6,15 @@ import Home from "./Home"
 import Game from "./Game"
 
 export default (props) => {
-  return (
-    <>
-      <GlobalStyles />
-      <Router>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/game">
-          <Game />
-        </Route>
-      </Router>
-    </>
-  )
+  return <>
+    <GlobalStyles />
+    <Router>
+      <Route exact path="/">
+        <Home />
+      </Route>
+      <Route path="/game">
+        <Game />
+      </Route>
+    </Router>
+  </>
 }

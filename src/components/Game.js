@@ -1,8 +1,7 @@
 import React, { useState } from "react"
-import styled from "styled-components"
 import { Link } from "react-router-dom"
+import styled from "styled-components"
 import Item from './Item'
-
 import cookieSrc from "../cookie.svg"
 
 const items = [
@@ -17,6 +16,21 @@ export default () => {
     cursor: 0, grandma: 0, farm: 0,
   })
 
+  const handleClick = ({ id, cost }) => {
+    // 1. can u purchase?
+    if (numCookies >= cost) {
+      // 2.1 Yes => Deduct cookies.
+      setNumCookies(prevValue => prevValue - cost)
+      // 2.2 Yes => Increment item count in purchasedItems.
+      setPurchasedItems(prevValue => {
+        return { ...prevValue, [id]: prevValue[id] + 1 }
+      })
+    } else {
+      // 3. No => Return an error with window.alert
+      window.alert("Not enough cookies.")
+    }
+  }
+
   return (
     <Wrapper>
       <GameArea>
@@ -24,7 +38,7 @@ export default () => {
           <Total>{numCookies} cookies</Total>
           <strong>{}</strong> cookies per second
         </Indicator>
-        <Button>
+        <Button onClick={() => setNumCookies(prevValue => prevValue + 1)}>
           <Cookie src={cookieSrc} />
         </Button>
       </GameArea>
@@ -36,7 +50,7 @@ export default () => {
             key={item.id}
             item={item}
             purchasedItems={purchasedItems}
-            handleClick={() => console.log('handleClick')}
+            handleClick={() => handleClick(item)}
           />
         })}
       </ItemArea>
@@ -48,21 +62,23 @@ export default () => {
 const Wrapper = styled.div`
   display: flex;
   height: 100vh;
-`;
+`
+
 const GameArea = styled.div`
   flex: 1;
   display: grid;
   place-items: center;
-`;
+`
+
 const Button = styled.button`
   border: none;
   background: transparent;
   cursor: pointer;
-`;
+`
 
 const Cookie = styled.img`
   width: 200px;
-`;
+`
 
 const ItemArea = styled.div`
   height: 100%;
@@ -70,13 +86,13 @@ const ItemArea = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-`;
+`
 
 const SectionTitle = styled.h3`
   text-align: center;
   font-size: 32px;
   color: yellow;
-`;
+`
 
 const Indicator = styled.div`
   position: absolute;
@@ -86,16 +102,16 @@ const Indicator = styled.div`
   right: 0;
   margin: auto;
   text-align: center;
-`;
+`
 
 const Total = styled.h3`
   font-size: 28px;
   color: lime;
-`;
+`
 
 const HomeLink = styled(Link)`
   position: absolute;
   top: 15px;
   left: 15px;
   color: #666;
-`;
+`

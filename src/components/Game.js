@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import styled from "styled-components"
 import Item from './Item'
 import cookieSrc from "../cookie.svg"
+import useInterval from '../hooks/use-interval.hook'
 
 const items = [
   { id: "cursor", name: "Cursor", cost: 10, value: 1 },
@@ -31,12 +32,29 @@ export default () => {
     }
   }
 
+  const calculateCookiesPerTick = purchasedItems => {
+
+    const cookieRates = Object.keys(purchasedItems).map(key => {
+      const value = items.find(item => item.id === key).value
+      return purchasedItems[key] * value
+    })
+
+    const combinedRates = cookieRates.reduce((total, current) => total + current)
+
+    return combinedRates
+  }
+
+  useInterval(() => {
+    const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems)
+    setNumCookies(prevValue => prevValue + numOfGeneratedCookies)
+  }, 1000)
+
   return (
     <Wrapper>
       <GameArea>
         <Indicator>
           <Total>{numCookies} cookies</Total>
-          <strong>{}</strong> cookies per second
+          <strong>{calculateCookiesPerTick(purchasedItems)}</strong> cookies per second
         </Indicator>
         <Button onClick={() => setNumCookies(prevValue => prevValue + 1)}>
           <Cookie src={cookieSrc} />

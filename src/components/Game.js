@@ -77,12 +77,13 @@ export default () => {
 
       <ItemArea>
         <SectionTitle>Items:</SectionTitle>
-        { items.map(item => {
+        { items.map((item, index) => {
           return <Item
             key={item.id}
             item={item}
             purchasedItems={purchasedItems}
             handleClick={() => handleClick(item)}
+            isFirst={index === 0}
           />
         })}
       </ItemArea>

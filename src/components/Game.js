@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import Item from './Item'
 import cookieSrc from "../cookie.svg"
-import useInterval from '../hooks/use-interval.hook'
+import useInterval from '../hooks/useInterval'
+import useKeydown from '../hooks/useKeydown'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 
 const items = [
   { id: "cursor", name: "Cursor", cost: 10, value: 1 },
@@ -14,9 +16,10 @@ const items = [
 export default () => {
   const [numCookies, setNumCookies] = useState(100)
 
-  useEffect(() => {
-    document.title = `${numCookies} cookies - Cookie Clicker`
-  }, [numCookies])
+  useDocumentTitle(
+    `${numCookies} cookies - Cookie Clicker`,
+    `Cookie Clicker`
+  )
 
   const [purchasedItems, setPurchasedItems] = useState({
     cursor: 0, grandma: 0, farm: 0,
@@ -49,14 +52,7 @@ export default () => {
     return combinedRates
   }
 
-  const handleKeydown = event => {
-    event.code === "Space" && setNumCookies(prevValue => prevValue + 1)
-  }
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeydown)
-    return () => window.removeEventListener('keydown', handleKeydown)
-  })
+  useKeydown("Space", () => setNumCookies(prevValue => prevValue + 1))
 
   useInterval(() => {
     const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems)
@@ -78,13 +74,15 @@ export default () => {
       <ItemArea>
         <SectionTitle>Items:</SectionTitle>
         { items.map((item, index) => {
-          return <Item
-            key={item.id}
-            item={item}
-            purchasedItems={purchasedItems}
-            handleClick={() => handleClick(item)}
-            isFirst={index === 0}
-          />
+          return (
+            <Item
+              key={item.id}
+              item={item}
+              purchasedItems={purchasedItems}
+              handleClick={() => handleClick(item)}
+              isFirst={index === 0}
+            />
+          )
         })}
       </ItemArea>
       <HomeLink to="/">Return home</HomeLink>

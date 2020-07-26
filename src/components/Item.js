@@ -5,7 +5,10 @@ export default ({ item: { id, name, cost, value }, purchasedItems, handleClick, 
   const numOwned = Object.entries(purchasedItems).find(([ itemName ]) => itemName === id)[1]
   const btnRef = useRef()
 
-  useEffect(() => isFirst && btnRef.current.focus(), [])
+  useEffect(() => {
+    if (isFirst)
+      btnRef.current.focus()
+  }, [isFirst])
 
   return <ButtonWrapper onClick={handleClick} ref={btnRef}>
     <ItemWrapper>

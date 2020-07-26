@@ -49,6 +49,15 @@ export default () => {
     return combinedRates
   }
 
+  const handleKeydown = event => {
+    event.code === "Space" && setNumCookies(prevValue => prevValue + 1)
+  }
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeydown)
+    return () => window.removeEventListener('keydown', handleKeydown)
+  })
+
   useInterval(() => {
     const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems)
     setNumCookies(prevValue => prevValue + numOfGeneratedCookies)

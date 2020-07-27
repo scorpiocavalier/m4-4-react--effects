@@ -1,16 +1,16 @@
-import React, { useState } from "react"
-import { Link } from "react-router-dom"
-import styled from "styled-components"
-import Item from './Item'
-import cookieSrc from "../cookie.svg"
-import useInterval from '../hooks/useInterval'
-import useKeydown from '../hooks/useKeydown'
-import useDocumentTitle from '../hooks/useDocumentTitle'
+import React, { useState }  from "react"
+import { Link }             from "react-router-dom"
+import styled               from "styled-components"
+import Item                 from './Item'
+import cookieSrc            from "../cookie.svg"
+import useInterval          from '../hooks/useInterval'
+import useKeydown           from '../hooks/useKeydown'
+import useDocumentTitle     from '../hooks/useDocumentTitle'
 
 const items = [
-  { id: "cursor", name: "Cursor", cost: 10, value: 1 },
-  { id: "grandma", name: "Grandma", cost: 100, value: 10 },
-  { id: "farm", name: "Farm", cost: 1000, value: 80 },
+  { id: "cursor"  , name: "Cursor"  , cost: 10  , value: 1  },
+  { id: "grandma" , name: "Grandma" , cost: 100 , value: 10 },
+  { id: "farm"    , name: "Farm"    , cost: 1000, value: 80 },
 ]
 
 export default () => {

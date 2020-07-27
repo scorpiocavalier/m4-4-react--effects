@@ -41,15 +41,14 @@ export default () => {
   }
 
   const calculateCookiesPerTick = purchasedItems => {
+    const reducer = (acc, itemId) => {
+      const numOwned = purchasedItems[itemId]
+      const item = items.find(item => item.id === itemId)
+      const value = item.value
 
-    const cookieRates = Object.keys(purchasedItems).map(key => {
-      const value = items.find(item => item.id === key).value
-      return purchasedItems[key] * value
-    })
-
-    const combinedRates = cookieRates.reduce((total, current) => total + current)
-
-    return combinedRates
+      return acc + value * numOwned
+    }
+    return Object.keys(purchasedItems).reduce(reducer, 0)
   }
 
   useKeydown("Space", () => setNumCookies(prevValue => prevValue + 1))

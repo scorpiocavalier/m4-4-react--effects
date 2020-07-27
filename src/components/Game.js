@@ -7,25 +7,23 @@ import useInterval          from '../hooks/useInterval'
 import useKeydown           from '../hooks/useKeydown'
 import useDocumentTitle     from '../hooks/useDocumentTitle'
 
-const items = [
-  { id: "cursor"  , name: "Cursor"  , cost: 10  , value: 1  },
-  { id: "grandma" , name: "Grandma" , cost: 100 , value: 10 },
-  { id: "farm"    , name: "Farm"    , cost: 1000, value: 80 },
-]
-
 export default () => {
-  const [numCookies, setNumCookies] = useState(100)
 
-  useDocumentTitle(
-    `${numCookies} cookies - Cookie Clicker`,
-    `Cookie Clicker`
-  )
+  const items = [
+    { id: "cursor", name: "Cursor", cost: 10, value: 1 },
+    { id: "grandma", name: "Grandma", cost: 100, value: 10 },
+    { id: "farm", name: "Farm", cost: 1000, value: 80 },
+  ]
+
+  const [numCookies, setNumCookies] = useState(100)
 
   const [purchasedItems, setPurchasedItems] = useState({
     cursor: 0, grandma: 0, farm: 0,
   })
 
-  const handleClick = ({ id, cost }) => {
+  const incrementCookies = () => setNumCookies(prevValue => prevValue + 1)
+
+  const handleAttemptedPurchase = ({ id, cost }) => {
     // 1. can u purchase?
     if (numCookies >= cost) {
       // 2.1 Yes => Deduct cookies.
@@ -40,7 +38,7 @@ export default () => {
     }
   }
 
-  const calculateCookiesPerTick = purchasedItems => {
+  const calculateCookiesPerSecond = purchasedItems => {
     const reducer = (acc, itemId) => {
       const numOwned = purchasedItems[itemId]
       const item = items.find(item => item.id === itemId)
@@ -51,21 +49,26 @@ export default () => {
     return Object.keys(purchasedItems).reduce(reducer, 0)
   }
 
-  useKeydown("Space", () => setNumCookies(prevValue => prevValue + 1))
-
   useInterval(() => {
-    const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems)
+    const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems)
     setNumCookies(prevValue => prevValue + numOfGeneratedCookies)
   }, 1000)
+
+  useDocumentTitle(
+    `${numCookies} cookies - Cookie Clicker`,
+    `Cookie Clicker`
+  )
+
+  useKeydown("Space", incrementCookies)
 
   return (
     <Wrapper>
       <GameArea>
         <Indicator>
           <Total>{numCookies} cookies</Total>
-          <strong>{calculateCookiesPerTick(purchasedItems)}</strong> cookies per second
+          <strong>{calculateCookiesPerSecond(purchasedItems)}</strong> cookies per second
         </Indicator>
-        <Button onClick={() => setNumCookies(prevValue => prevValue + 1)}>
+        <Button onClick={incrementCookies}>
           <Cookie src={cookieSrc} />
         </Button>
       </GameArea>
@@ -78,7 +81,7 @@ export default () => {
               key={item.id}
               item={item}
               purchasedItems={purchasedItems}
-              handleClick={() => handleClick(item)}
+              handleAttemptedPurchase={() => handleAttemptedPurchase(item)}
               isFirst={index === 0}
             />
           )

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
-export default ({ item: { id, name, cost, value }, purchasedItems, handleClick, isFirst }) => {
+export default ({ item: { id, name, cost, value }, purchasedItems, handleAttemptedPurchase, isFirst }) => {
   const numOwned = Object.entries(purchasedItems).find(([ itemName ]) => itemName === id)[1]
   const btnRef = useRef()
 
@@ -10,7 +10,7 @@ export default ({ item: { id, name, cost, value }, purchasedItems, handleClick, 
       btnRef.current.focus()
   }, [isFirst])
 
-  return <ButtonWrapper onClick={handleClick} ref={btnRef}>
+  return <ButtonWrapper onClick={handleAttemptedPurchase} ref={btnRef}>
     <ItemWrapper>
       <Name>{name}</Name>
       <Specs>Cost: {cost} cookie(s). Produces {value} cookies/second.</Specs>
